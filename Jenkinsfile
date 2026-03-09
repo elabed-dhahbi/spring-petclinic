@@ -1,40 +1,48 @@
 pipeline {
    agent { label 'JDK17' }
+
    environment {
       MVN = '/opt/maven/current'
    }
+
    options {
-      timeout(time:1,unit: 'HOURS')
+      timeout(time: 1, unit: 'HOURS')
       retry(3)
    }
+
    triggers {
-     cron('H */4 * * * 1-54' )
+      cron('H */4 * * *')
    }
+
    stages {
-      stage('Git Clone' ) {
+
+      stage('Git Clone') {
          steps {
-             git url: 'https://github.com/elabed-dhahbi/spring-petclinic.git', branch: 'main'
+            git url: 'https://github.com/elabed-dhahbi/spring-petclinic.git', branch: 'main'
          }
       }
+
       stage('Build the code') {
-        steps {
-           sh script: '"$MVN clean package"'
-        }
+         steps {
+            sh "$MVN/bin/mvn clean package"
+         }
       }
+
       stage('Reporting and Archiving') {
          steps {
-            junit testResults: 'target/surefire-reports/*.xml'
+            junit 'target/surefire-reports/*.xml'
          }
       }
-      post {
-          success {
-          //send the sucess email
-          echo "Success"
-        }
-          unsuccessful {
-        //send the failure email
-        echo "failed"
-        }
+
+   }
+
+   post {
+      success {
+         echo "Success"
+      }
+
+      unsuccessful {
+         echo "failed"
       }
    }
 }
