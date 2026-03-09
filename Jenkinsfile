@@ -27,11 +27,11 @@ pipeline {
          }
       }
       post {
-      success {
+          success {
           //send the sucess email
           echo "Success"
         }
-        unsuccessful {
+          unsuccessful {
         //send the failure email
         echo "failed"
         }
