@@ -8,7 +8,7 @@ pipeline {
       retry(3)
    }
    triggers {
-     cron('H */4 * * * 1-54 )
+     cron('H */4 * * * 1-54' )
    }
    stages {
       stage('Git Clone' ) {
